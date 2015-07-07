@@ -3,3 +3,4 @@ SE-S-CLD,Splunk Cloud Subscription (w/ Support)
 SE-S-STOR,Splunk Cloud Subscription - Additional Data Storage - 500gb increments
 SEU-S-CLD,Splunk Cloud Subscription - Capacity Upgrade (Including Support) - GB/day
 SEU-S-STOR,Splunk Cloud Subscription - Storage Capacity Upgrade - 500 GB Increments
+IGNORE,Ignore this SKU
