@@ -1,0 +1,77 @@
+<form>
+  <label>Cloud Sales Activity</label>
+  <description>Cloud Adoption Activity</description>
+  <fieldset submitButton="true">
+    <input type="dropdown" token="searchAccountName">
+      <label>Account Name</label>
+      <choice value="*">[ Select Account ]</choice>
+      <search>
+        <query>| inputlookup cloud_adoption | dedup AccountName | table AccountName</query>
+      </search>
+      <fieldForLabel>AccountName</fieldForLabel>
+      <fieldForValue>AccountName</fieldForValue>
+      <default>*</default>
+      <initialValue>*</initialValue>
+    </input>
+    <input type="dropdown" token="searchTheater">
+      <label>Theater</label>
+      <choice value="*">[ All Regions ]</choice>
+      <search>
+        <query>| inputlookup cloud_adoption |  dedup Theater |table Theater</query>
+      </search>
+      <fieldForLabel>Theater</fieldForLabel>
+      <fieldForValue>Theater</fieldForValue>
+      <initialValue>*</initialValue>
+      <default>*</default>
+    </input>
+    <input type="dropdown" token="searchProductCode" searchWhenChanged="true">
+      <label>SKU</label>
+      <choice value="*">[ All Skus ]</choice>
+      <search>
+        <query>| inputlookup cloud_product_sku  | table Cloud_SKU</query>
+      </search>
+      <fieldForLabel>Cloud_SKU</fieldForLabel>
+      <fieldForValue>Cloud_SKU</fieldForValue>
+    </input>
+    <input type="time" token="timeRangePicker">
+      <label></label>
+      <default>
+        <earliest>-7d@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <table>
+        <search>
+          <query>| inputlookup cloud_adoption |  eval _time=strptime(_time, "%Y-%m-%d") | addinfo | eval info_max_time=if(info_max_time="+Infinity",9999999999,info_max_time) | where _time &gt;= info_min_time AND _time &lt; info_max_time | fields - info_* _time | search AccountName="$searchAccountName$" AND Theater="$searchTheater$" AND ProductCode="$searchProductCode$"  | table AccountName, AccountId, OpportunityId, OpportunityName, OpportunityOwner, ProductCode, SizeGb, CloseDate | eval SizeGb=round(SizeGb,0) | rename AccountName as "Customer Name", AccountId as "Account", OpportunityId as "SFDC Opportunity ID", OpportunityName as "Opportunity", OpportunityOwner as "Account Manager", SizeGb as "Order Size"</query>
+          <earliest>$timeRangePicker.earliest$</earliest>
+          <latest>$timeRangePicker.latest$</latest>
+        </search>
+        <option name="wrap">undefined</option>
+        <option name="rowNumbers">undefined</option>
+        <option name="drilldown">row</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <title>Cloud SKU's</title>
+        <search>
+          <query>| inputlookup cloud_product_sku | rename Cloud_SKU AS "Cloud Product SKUs", SKU_Description AS "Description"</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="wrap">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="drilldown">none</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+</form>

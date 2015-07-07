@@ -1,0 +1,45 @@
+[app/ui]
+version = 6.3.0
+modtime = 1436148449.043475000
+
+[app/launcher]
+version = 6.3.0
+modtime = 1436148449.046438000
+
+[lookups/cloud_adoption_skus.csv]
+access = read : [ * ], write : [ admin ]
+export = none
+owner = admin
+version = 6.3.0
+modtime = 1436148493.921416000
+
+[transforms/cloud_adoption]
+access = read : [ * ], write : [ admin ]
+export = none
+owner = admin
+version = 6.3.0
+modtime = 1436148534.988967000
+
+[views/cloud_sales_activity]
+owner = admin
+version = 6.3.0
+modtime = 1436232500.357771000
+
+[views/cloud_overview]
+owner = admin
+version = 6.3.0
+modtime = 1436232461.874892000
+
+[views/cloud_overview_theatre]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = admin
+version = 6.3.0
+modtime = 1436232309.640853000
+
+[macros/lookup_timerange]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = admin
+version = 6.3.0
+modtime = 1436232229.921831000
